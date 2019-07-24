@@ -207,7 +207,7 @@ public class AppWordTest {
 
        // appWordChangeByRandom(690);
 
-        appWordChangeByRandom("130","hh","value","G:\\appWord\\2.txt");
+        appWordChangeByRandom("3900","hh","value","G:\\appWord\\4.txt");
     }
 
 
@@ -221,11 +221,15 @@ public class AppWordTest {
      * @throws IOException
      */
     private static void appWordChangeByRandom(final String id,final String word,final String value,String path) throws IOException {
-
+        Long start = System.currentTimeMillis();
         System.out.println("应用下词增加 appId:"+id+" word:"+word+" value:"+value);
         String appId = "appId:" + id;
         try{
             File file = new File(path);//查询文件
+            if(!file.exists()){
+                file.createNewFile();
+            }
+
             BufferedReader bufferedReader = new BufferedReader( new FileReader(file), 3 * 1024 * 1024);
             String str = null;
             int position=0;//追加位置
@@ -301,6 +305,9 @@ public class AppWordTest {
         ){
             e.printStackTrace();
         }
+
+        Long endT = System.currentTimeMillis();
+        System.out.println("追加耗时：" + (endT - start));
     }
 
 

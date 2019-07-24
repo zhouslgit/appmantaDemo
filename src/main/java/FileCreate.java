@@ -25,10 +25,10 @@ public class FileCreate {
             FileWriter fileWriter=new FileWriter(file);
             BufferedWriter bufferedWriter=new BufferedWriter(fileWriter);
             System.out.println("创建文件"+i);
-            for (int j = 1; j <=30; j++) {
+            for (int j = 1; j <=3000; j++) {
                 //每行1w+ word
                 JSONArray jsonArray=new JSONArray();
-                for (int k = 1; k <=10; k++) {
+                for (int k = 1; k <=10000; k++) {
                     JSONObject jsonObject=new JSONObject();
                     jsonObject.put("word",k);
                     jsonObject.put("value",k+"=count+hot");
