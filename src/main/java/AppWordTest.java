@@ -224,81 +224,83 @@ public class AppWordTest {
 
         System.out.println("应用下词增加 appId:"+id+" word:"+word+" value:"+value);
         String appId = "appId:" + id;
-        File file = new File(path);//查询文件
-        BufferedReader bufferedReader = new BufferedReader( new FileReader(file), 3 * 1024 * 1024);
-        String str = null;
-        int position=0;//追加位置
-        int add=0;
-        boolean flag=false;//判断新增或追加
-        String content=null;
-        File tempFile=File.createTempFile("temp",null);//创建临时文件
-        BufferedWriter bufferedWriter=new BufferedWriter(new FileWriter(tempFile));//写临时文件
-        while ((str = bufferedReader.readLine()) != null) {
-            if(flag&&null!=str){//追加内容
-                bufferedWriter.write(str+"\n");
-                bufferedWriter.flush();
-            }
-            String append=str;
-            String[] data = str.split("\t");
-
-            if (appId.equals(data[0])) {
-                JSONArray jsonArray=JSONArray.parseArray(data[1]);
-                JSONObject appendNew=new JSONObject();
-                appendNew.put("word",word);
-                appendNew.put("value",value);
-                jsonArray.add(appendNew);
-                if(add!=0){
-                    content="\n"+appId+"\t"+(jsonArray.toJSONString())+"\n";
-                }else {
-                    content=appId+"\t"+(jsonArray.toJSONString())+"\n";
+        try{
+            File file = new File(path);//查询文件
+            BufferedReader bufferedReader = new BufferedReader( new FileReader(file), 3 * 1024 * 1024);
+            String str = null;
+            int position=0;//追加位置
+            int add=0;
+            boolean flag=false;//判断新增或追加
+            String content=null;
+            File tempFile=File.createTempFile("temp",null);//创建临时文件
+            BufferedWriter bufferedWriter=new BufferedWriter(new FileWriter(tempFile));//写临时文件
+            while ((str = bufferedReader.readLine()) != null) {
+                if(flag&&null!=str){//追加内容
+                    bufferedWriter.write(str+"\n");
+                    bufferedWriter.flush();
                 }
+                String append=str;
+                String[] data = str.split("\t");
 
-                flag=true;
-            }else{
-                if(!flag){
-                    position+=append.length();//确定位置
-                    add++;
+                if (appId.equals(data[0])) {
+                    JSONArray jsonArray=JSONArray.parseArray(data[1]);
+                    JSONObject appendNew=new JSONObject();
+                    appendNew.put("word",word);
+                    appendNew.put("value",value);
+                    jsonArray.add(appendNew);
+                    if(add!=0){
+                        content="\n"+appId+"\t"+(jsonArray.toJSONString())+"\n";
+                    }else {
+                        content=appId+"\t"+(jsonArray.toJSONString())+"\n";
+                    }
+
+                    flag=true;
+                }else{
+                    if(!flag){
+                        position+=append.length();//确定位置
+                        add++;
+                    }
                 }
             }
-        }
-
-        int addPY=0;
-        if((add-1>0)){
-            addPY=add-1;
-        }
-
-        if(flag){//存在可以追加的应用
-            RandomAccessFile randomAccessFile=new RandomAccessFile(file,"rw");
-            randomAccessFile.seek(position+addPY);//确定插入位置
-            randomAccessFile.write(content.getBytes());
-
-            BufferedReader br=new BufferedReader(new FileReader(tempFile));
-
-            String fugai=null;
-            while (null!=(fugai=br.readLine())){
-
-                randomAccessFile.write((fugai+"\n").getBytes());
+            int addPY=0;
+            if((add-1>0)){
+                addPY=add-1;
             }
-            br.close();
-            randomAccessFile.close();
-        }else {//新建一个appID
-            BufferedWriter bw=new BufferedWriter(new FileWriter(file,true));
-            JSONArray jsonArray=new JSONArray();
-            JSONObject addNew=new JSONObject();
-            addNew.put("word",word);
-            addNew.put("value",value);
-            jsonArray.add(addNew);
-            String newAppIdWord=appId+"\t"+jsonArray.toJSONString();
-            bw.write(newAppIdWord);
-            bw.newLine();
-            bw.close();
+            if(flag){//存在可以追加的应用
+                RandomAccessFile randomAccessFile=new RandomAccessFile(file,"rw");
+                randomAccessFile.seek(position+addPY);//确定插入位置
+                randomAccessFile.write(content.getBytes());
 
+                BufferedReader br=new BufferedReader(new FileReader(tempFile));
+
+                String fugai=null;
+                while (null!=(fugai=br.readLine())){
+
+                    randomAccessFile.write((fugai+"\n").getBytes());
+                }
+                br.close();
+                randomAccessFile.close();
+            }else {//新建一个appID
+                BufferedWriter bw=new BufferedWriter(new FileWriter(file,true));
+                JSONArray jsonArray=new JSONArray();
+                JSONObject addNew=new JSONObject();
+                addNew.put("word",word);
+                addNew.put("value",value);
+                jsonArray.add(addNew);
+                String newAppIdWord=appId+"\t"+jsonArray.toJSONString();
+                bw.write(newAppIdWord);
+                bw.newLine();
+                bw.close();
+
+            }
+            bufferedReader.close();
+            bufferedWriter.close();
+            tempFile.delete();//
         }
-
-
-        bufferedReader.close();
-        bufferedWriter.close();
-        tempFile.delete();//
+        catch (Exception e
+        ){
+            e.printStackTrace();
+        }
     }
 
 
