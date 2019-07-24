@@ -25,19 +25,19 @@ public class FileCreate {
             FileWriter fileWriter=new FileWriter(file);
             BufferedWriter bufferedWriter=new BufferedWriter(fileWriter);
             System.out.println("创建文件"+i);
-            for (int j = 1; j <=300; j++) {
+            for (int j = 1; j <=30; j++) {
                 //每行1w+ word
-//                JSONArray jsonArray=new JSONArray();
-//                for (int k = 1; k <=10000; k++) {
-//                    JSONObject jsonObject=new JSONObject();
-//                    jsonObject.put("word",k);
-//                    jsonObject.put("value",k+"=count+hot");
-//                    jsonArray.add(jsonObject);
-//                }
-              JSONArray jsonArray=new JSONArray();
-                for (int k =0; k <10 ; k++) {
-                    jsonArray.add(appId+"keyword");
+                JSONArray jsonArray=new JSONArray();
+                for (int k = 1; k <=10; k++) {
+                    JSONObject jsonObject=new JSONObject();
+                    jsonObject.put("word",k);
+                    jsonObject.put("value",k+"=count+hot");
+                    jsonArray.add(jsonObject);
                 }
+//              JSONArray jsonArray=new JSONArray();
+//                for (int k =0; k <10 ; k++) {
+//                    jsonArray.add(appId+"keyword");
+//                }
 
                 String data="appId:"+appId+"\t"+jsonArray.toJSONString()+"\n";
                  bufferedWriter.write(data);//写一行数据
