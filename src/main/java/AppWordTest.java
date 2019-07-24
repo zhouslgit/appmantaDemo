@@ -115,7 +115,7 @@ public class AppWordTest {
        // BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(newFile, true));
         BufferedReader bufferedReader = new BufferedReader( new FileReader(file), 5 * 1024 * 1024);
         String str = null;
-        RandomAccessFile randomAccessFile=new RandomAccessFile(file,"rw");
+
         int position=0;//追加位置
         //int cover=0;
         int add=0;
@@ -124,7 +124,7 @@ public class AppWordTest {
        // String end="";
         File tempFile=File.createTempFile("temp",null);
         tempFile.deleteOnExit();
-        BufferedWriter bufferedWriter=new BufferedWriter(new FileWriter(tempFile));
+        BufferedWriter bufferedWriter=new BufferedWriter(new FileWriter(tempFile));//写临时文件
         while ((str = bufferedReader.readLine()) != null) {
             if(flag&&null!=str){//追加内容
                 //end+=str+"\n";
@@ -138,9 +138,9 @@ public class AppWordTest {
                 JSONArray jsonArray=JSONArray.parseArray(data[1]);
                 jsonArray.add("lkagj");
                 if(add!=0){
-                content="\n"+appId+"\t"+new String(jsonArray.toJSONString())+"\n";
+                content="\n"+appId+"\t"+(jsonArray.toJSONString())+"\n";
                 }else {
-                    content=appId+"\t"+new String(jsonArray.toJSONString())+"\n";
+                    content=appId+"\t"+(jsonArray.toJSONString())+"\n";
                 }
 
                 flag=true;
@@ -156,22 +156,38 @@ public class AppWordTest {
         if((add-1>0)){
             addPY=add-1;
         }
-        randomAccessFile.seek(position+addPY);//确定插入位置
-        randomAccessFile.write(content.getBytes());
 
-        //randomAccessFile.write(end.getBytes());
+        if(flag){//存在可以追加的应用
+            RandomAccessFile randomAccessFile=new RandomAccessFile(file,"rw");
+            randomAccessFile.seek(position+addPY);//确定插入位置
+            randomAccessFile.write(content.getBytes());
 
-        BufferedReader br=new BufferedReader(new FileReader(tempFile));
+            //randomAccessFile.write(end.getBytes());
 
-        String fugai=null;
-        while (null!=(fugai=br.readLine())){
+            BufferedReader br=new BufferedReader(new FileReader(tempFile));
 
-            randomAccessFile.write((fugai+"\n").getBytes());
+            String fugai=null;
+            while (null!=(fugai=br.readLine())){
+
+                randomAccessFile.write((fugai+"\n").getBytes());
+            }
+            br.close();
+            randomAccessFile.close();
+        }else {//新建一个appID
+
+         BufferedWriter bw=new BufferedWriter(new FileWriter(file,true));
+         JSONArray jsonArray=new JSONArray();
+         jsonArray.add("asdfasdfa");
+         String newAppIdWord=appId+"\t"+jsonArray.toJSONString();
+         bw.write(newAppIdWord);
+         bw.newLine();
+         bw.close();
+
+
+
         }
 
 
-        br.close();
-        randomAccessFile.close();
         bufferedReader.close();
         bufferedWriter.close();
 
@@ -188,7 +204,7 @@ public class AppWordTest {
         //appWordGet(6099);
 
 
-        appWordChangeByRandom(4600);
+        appWordChangeByRandom(690);
     }
 
 }

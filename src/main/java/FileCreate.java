@@ -25,7 +25,7 @@ public class FileCreate {
             FileWriter fileWriter=new FileWriter(file);
             BufferedWriter bufferedWriter=new BufferedWriter(fileWriter);
             System.out.println("创建文件"+i);
-            for (int j = 1; j <=3000; j++) {
+            for (int j = 1; j <=300; j++) {
                 //每行1w+ word
 //                JSONArray jsonArray=new JSONArray();
 //                for (int k = 1; k <=10000; k++) {
@@ -35,7 +35,7 @@ public class FileCreate {
 //                    jsonArray.add(jsonObject);
 //                }
               JSONArray jsonArray=new JSONArray();
-                for (int k =0; k <10000 ; k++) {
+                for (int k =0; k <10 ; k++) {
                     jsonArray.add(appId+"keyword");
                 }
 
